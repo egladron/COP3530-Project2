@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 4.1)
 project(COP3530_Project2)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 include_directories(.)
 
