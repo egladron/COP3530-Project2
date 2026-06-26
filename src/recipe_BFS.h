@@ -1,0 +1,10 @@
+
+#ifndef COP3530_PROJECT2_RECIPE_BFS_H
+#define COP3530_PROJECT2_RECIPE_BFS_H
+
+
+class recipe_BFS {
+};
+
+
+#endif //COP3530_PROJECT2_RECIPE_BFS_H

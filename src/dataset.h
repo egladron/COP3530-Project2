@@ -1,0 +1,11 @@
+
+
+#ifndef COP3530_PROJECT2_DATASET_H
+#define COP3530_PROJECT2_DATASET_H
+
+
+class dataset {
+};
+
+
+#endif //COP3530_PROJECT2_DATASET_H

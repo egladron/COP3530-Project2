@@ -1,0 +1,11 @@
+
+
+#ifndef COP3530_PROJECT2_RECIPE_GRAPH_H
+#define COP3530_PROJECT2_RECIPE_GRAPH_H
+
+
+class recipe_graph {
+};
+
+
+#endif //COP3530_PROJECT2_RECIPE_GRAPH_H
