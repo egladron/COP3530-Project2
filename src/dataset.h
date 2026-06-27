@@ -11,7 +11,7 @@ class datasetDownloader {
     string fileDirectory;
     bool downloadFile();
     bool extractFile();
-    bool isDownloaded();
+    bool isDownloaded() const;
 
 public:
     datasetDownloader();
