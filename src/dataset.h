@@ -3,8 +3,20 @@
 #ifndef COP3530_PROJECT2_DATASET_H
 #define COP3530_PROJECT2_DATASET_H
 
+#include <string>
+using namespace std;
 
-class dataset {
+
+class datasetDownloader {
+    string fileDirectory;
+    bool downloadFile();
+    bool extractFile();
+    bool isDownloaded() const;
+
+public:
+    datasetDownloader();
+    bool checkAvailability();
+    string filePath();
 };
 
 
