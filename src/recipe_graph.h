@@ -8,6 +8,8 @@
 
 using namespace std;
 
+class recipeDFS;
+
 class recipeGraph {
 
     //  Recipe houses wanted data from the CSV file
@@ -30,6 +32,7 @@ class recipeGraph {
         string algorithmUsed;
     };
 
+    //  Node structs used for traversal in the algorithms
     struct ingredientNode {
         string name;
         vector<size_t> neighbors;
@@ -54,10 +57,17 @@ class recipeGraph {
     /*  bfs() and dfs() run their respective algorithms return a struct searchResult that contains recipes found,
      *  nodes visited, how long the search took, and which algorithm was performed
      *
-     *  The algorithms themselves are found in recipe_BFS and recipe_DFS
+     *  Each are overloaded to support single ingredients or multiple ingredients
+     *
+     *  The algorithms themselves are found in recipe_BFS and recipe_DFS files
      */
     searchResult bfs(const string& ingredient) const;
-    searchResult dfs(const string& ingredient) const;
+    searchResult bfs(const vector<string>& ingredients) const;
+    searchResult dfs(const string& ingredient);
+    searchResult dfs(const vector<string>& ingredients);
+
+    //  The results of the search will be stored here
+    searchResult result{};
 
     //  This section of helper functions assist in parsing the CSV file
     string filterQuotes(const string& str);
@@ -69,9 +79,31 @@ class recipeGraph {
     bool loadCSV(const string& filename);
 
 public:
+    //  Constructor, automatically loads the recipes_data.csv file and populates the graph
     recipeGraph();
+
+    //  A helper function for printing individual recipes (Could be moved to private)
     void printRecipe(const Recipe& recipe) const;
+
+    /*  The main printing function for printing search benchmark and for printing matching recipes out to main
+     *  Contains an interactive loop to continue printing recipes one-by-one so long as
+     *  there are still matching recipes to print
+     *
+     *  Requires a search to be performed in order to populate searchResult result and have the function work
+     */
+    void printResults();
+
+    //  Various getter functions
     const vector<Recipe>& getRecipes() const;
+    const vector<ingredientNode>& getIngredientNodes() const;
+    const vector<recipeNode>& getRecipeNodes() const;
+    int findIngredientIndex(const string& name) const;
+
+    //  The main search functions with overloading depending on the number of ingredients being searched
+    void searchBfs(const string& ingredient);
+    void searchBfs(const vector<string>& ingredients);
+    void searchDfs(const string& ingredient);
+    void searchDfs(const vector<string>& ingredients);
 };
 
 

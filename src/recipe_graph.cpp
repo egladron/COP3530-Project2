@@ -1,9 +1,14 @@
 
 
 #include "recipe_graph.h"
+#include "recipe_DFS.h"
+#include "recipe_BFS.h"
+
 #include <algorithm>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
+#include <random>
 #include <unordered_map>
 
 string recipeGraph::filterQuotes(const string &str) {
@@ -89,6 +94,7 @@ bool recipeGraph::loadCSV(const string& filename) {
     getline(file, line);
     unordered_map<string, size_t> ingredientLookup;
     unordered_map<string, size_t> recipeLookup;
+    int items = 0;
     while (getline(file, line)) {
         vector<string> attributes = parseCSV(line);
 
@@ -129,8 +135,8 @@ bool recipeGraph::loadCSV(const string& filename) {
             ingredientNodes[ingredientId].neighbors.push_back((recipeId));
             newRecipeNode.neighbors.push_back(ingredientId);
         }
-        recipes.push_back(move(recipe));
-        recipeNodes.push_back(move(newRecipeNode));
+        recipes.push_back(std::move(recipe));
+        recipeNodes.push_back(std::move(newRecipeNode));
     }
 
     file.close();
@@ -160,4 +166,92 @@ void recipeGraph::printRecipe(const Recipe& recipe) const {
         cout << ingr << " ";
     }
     cout << endl;
+}
+
+const vector<recipeGraph::ingredientNode> &recipeGraph::getIngredientNodes() const {
+    return ingredientNodes;
+}
+
+const vector<recipeGraph::recipeNode> &recipeGraph::getRecipeNodes() const {
+    return recipeNodes;
+}
+
+int recipeGraph::findIngredientIndex(const string &name) const {
+    for (size_t i = 0; i < ingredientNodes.size(); i++) {
+        if (ingredientNodes[i].name == name) {
+            return static_cast<int>(i);
+        }
+    }
+    return -1;
+}
+
+recipeGraph::searchResult recipeGraph::dfs(const string &ingredient) {
+    searchResult results;
+    recipeDFS dfsSearch(*this);
+
+    vector<size_t> recipeIndices = dfsSearch.search(ingredient);
+
+    for (size_t indices : recipeIndices) {
+        results.recipes.push_back(recipes[indices]);
+    }
+
+    results.nodesVisited = dfsSearch.getNodesVisited();
+    results.timeElapsed = dfsSearch.getTimeElapsed();
+    results.algorithmUsed = "DFS";
+
+    return results;
+}
+
+recipeGraph::searchResult recipeGraph::dfs(const vector<string> &ingredients) {
+    searchResult results;
+    recipeDFS dfsSearch(*this);
+
+    vector<size_t> recipeIndices = dfsSearch.searchMultiple(ingredients);
+
+    for (size_t indices : recipeIndices) {
+        results.recipes.push_back(recipes[indices]);
+    }
+
+    results.nodesVisited = dfsSearch.getNodesVisited();
+    results.timeElapsed = dfsSearch.getTimeElapsed();
+    results.algorithmUsed = "DFS";
+
+    return results;
+}
+
+void recipeGraph::searchDfs(const string &ingredient) {
+    result = dfs(ingredient);
+}
+
+void recipeGraph::searchDfs(const vector<string> &ingredients) {
+    result = dfs(ingredients);
+}
+
+void recipeGraph::printResults() {
+    cout << "Recipes found: " << result.recipes.size() << endl;
+    cout << "Nodes visited: " << result.nodesVisited << endl;
+    cout << fixed << setprecision(6);
+    cout << "Time elapsed: " << result.timeElapsed << " seconds" <<  endl;
+    cout << "Algorithm used: " << result.algorithmUsed <<  endl;
+    cout << "Try this recipe: " << endl;
+    string input = "";
+    random_device rd;
+    mt19937 gen(rd());
+    vector<Recipe> recipeList = result.recipes;
+    while (!recipeList.empty() && input != "n") {
+        uniform_int_distribution<int> dist(0, recipeList.size() - 1);
+        int randnum = dist(gen);
+        printRecipe(recipeList[randnum]);
+        recipeList.erase(recipeList.begin() + randnum);
+        if (!recipeList.empty()) {
+            cout << "Would you like another recipe? (Enter y for yes and n for no)." << endl;
+            cin >> input;
+            while (input != "y" && input != "n") {
+                cout << "Invalid input. Please input y for another recipe or n to exit." << endl;
+                cin >> input;
+            }
+        } else {
+            cout << "No more recipes match" << endl;
+        }
+    }
 }
