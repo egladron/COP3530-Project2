@@ -94,11 +94,23 @@ bool recipeGraph::loadCSV(const string& filename) {
     getline(file, line);
     unordered_map<string, size_t> ingredientLookup;
     unordered_map<string, size_t> recipeLookup;
-    int items = 0;
+    const int totalLines = 2231150;
+    int linesRead = 0;
+    int lastPercent = -1;
+
+
     while (getline(file, line)) {
         vector<string> attributes = parseCSV(line);
 
+
+        int percent = (linesRead * 100) / totalLines;
+        if (percent != lastPercent) {
+            lastPercent = percent;
+            printLoading(percent);
+        }
+
         if (attributes.size() < 6) {
+            linesRead++;
             continue;
         }
 
@@ -110,6 +122,7 @@ bool recipeGraph::loadCSV(const string& filename) {
         recipe.nerIngredients = parseList(attributes[5]);
 
         if (recipeLookup.find(recipe.title) != recipeLookup.end()) {
+            linesRead++;
             continue;
         }
 
@@ -137,8 +150,8 @@ bool recipeGraph::loadCSV(const string& filename) {
         }
         recipes.push_back(std::move(recipe));
         recipeNodes.push_back(std::move(newRecipeNode));
+        linesRead++;
     }
-
     file.close();
     return true;
 }
@@ -254,4 +267,34 @@ void recipeGraph::printResults() {
             cout << "No more recipes match" << endl;
         }
     }
+}
+
+void recipeGraph::printLoading(int percent) {
+    if (percent == 0) {
+        cout << "| Loading 2 million recipes... [";
+    } else if (percent != 0 && percent != 100 && percent % 25 == 0) {
+        cout << percent << "%";
+    } else if (percent != 0 && percent != 100 && percent % 5 == 0) {
+        cout << "=";
+    } else if (percent == 99) {
+        cout << "100%] |" << endl;
+    }
+}
+
+recipeGraph::searchResult recipeGraph::bfs(const string &ingredient) const {
+    searchResult result{};
+    return result;
+}
+
+recipeGraph::searchResult recipeGraph::bfs(const vector<string> &ingredients) const {
+    searchResult result{};
+    return result;
+}
+
+void recipeGraph::searchBfs(const string &ingredient) {
+    return;
+}
+
+void recipeGraph::searchBfs(const vector<string> &ingredients) {
+    return;
 }

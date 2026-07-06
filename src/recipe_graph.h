@@ -78,6 +78,8 @@ class recipeGraph {
     //  Reads the CSV file
     bool loadCSV(const string& filename);
 
+    void printLoading(int percent);
+
 public:
     //  Constructor, automatically loads the recipes_data.csv file and populates the graph
     recipeGraph();
