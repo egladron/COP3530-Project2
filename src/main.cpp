@@ -44,6 +44,12 @@ int main() {
     cout << "Select an option: >";
     while (input > 3 || input < 1) {
         cin >> input;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Error, invalid option selected, please choose a valid option from the menu" << endl;
+            continue;
+        }
         cin.ignore();
 
         if (input == 1 || input == 2) {
@@ -60,10 +66,17 @@ int main() {
             cout << "|  (3) Return to Main Menu                                     |" << endl;
             cout << "|                                                              |" << endl;
             cout << "+==============================================================+" << endl;
+            cout << endl;
             cout << "Select an option: >";
             int searchInput = 0;
             while (searchInput > 3 || searchInput < 1) {
                 cin >> searchInput;
+                if (cin.fail()) {
+                    cin.clear();
+                    cin.ignore(1000, '\n');
+                    cout << "Error, invalid option selected, please choose a valid option from the menu" << endl;
+                    continue;
+                }
                 cin.ignore();
                 if (searchInput == 1 && input == 1) {
                     string ingredient;

@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <iostream>
 #include <random>
+#include <sstream>
 #include <unordered_map>
 
 string recipeGraph::filterQuotes(const string &str) {
@@ -164,21 +165,26 @@ const vector<recipeGraph::Recipe> &recipeGraph::getRecipes() const {
     return recipes;
 }
 
-void recipeGraph::printRecipe(const Recipe& recipe) const {
-    cout << recipe.title << ":" << endl;
-    for (auto& ingr : recipe.ingredients) {
-        cout << ingr << " ";
+void recipeGraph::printRecipe(const Recipe& recipe) {
+    int textSpace = 60;
+
+    cout << "+==============================================================+" << endl;
+    uiBox("");
+    centerText(recipe.title);
+    uiBox("");
+    uiBox("Ingredients:");
+    for (const auto& i : recipe.ingredients) {
+        wrapText(i, "  - ", textSpace);
+     }
+    uiBox("");
+    uiBox("Directions:");
+    for (const auto& d : recipe.directions) {
+        wrapText(d, "  - ", textSpace);
     }
-    cout << endl;
-    for (auto& dir : recipe.directions) {
-        cout << dir << " ";
-    }
-    cout << endl;
-    cout << recipe.link << endl;
-    for (auto& ingr : recipe.nerIngredients) {
-        cout << ingr << " ";
-    }
-    cout << endl;
+    uiBox("");
+    uiBox("Link:" + recipe.link);
+    uiBox("");
+    cout << "+==============================================================+" << endl;
 }
 
 const vector<recipeGraph::ingredientNode> &recipeGraph::getIngredientNodes() const {
@@ -241,12 +247,23 @@ void recipeGraph::searchDfs(const vector<string> &ingredients) {
 }
 
 void recipeGraph::printResults() {
-    cout << "Recipes found: " << result.recipes.size() << endl;
-    cout << "Nodes visited: " << result.nodesVisited << endl;
-    cout << fixed << setprecision(6);
-    cout << "Time elapsed: " << result.timeElapsed << " seconds" <<  endl;
-    cout << "Algorithm used: " << result.algorithmUsed <<  endl;
-    cout << "Try this recipe: " << endl;
+    cout << "+==============================================================+" << endl;
+    uiBox("");
+
+    uiBox("Recipes found: " + to_string(result.recipes.size()));
+    uiBox("Nodes visited: " + to_string(result.nodesVisited));
+    stringstream ss;
+    ss << fixed << setprecision(3) << (result.timeElapsed * 1000) << " ms";
+    uiBox("Time elapsed: " + ss.str());
+    uiBox("Algorithm used: " + result.algorithmUsed);
+    uiBox("");
+    cout << "+==============================================================+" << endl;
+    uiBox("");
+    centerText("Try this recipe:");
+    uiBox("");
+    cout << "+==============================================================+" << endl;
+    uiBox("");
+
     string input = "";
     random_device rd;
     mt19937 gen(rd());
@@ -256,8 +273,16 @@ void recipeGraph::printResults() {
         int randnum = dist(gen);
         printRecipe(recipeList[randnum]);
         recipeList.erase(recipeList.begin() + randnum);
+        uiBox("");
         if (!recipeList.empty()) {
-            cout << "Would you like another recipe? (Enter y for yes and n for no)." << endl;
+            if (recipeList.size() > 1) {
+                centerText(to_string(recipeList.size()) + " other recipes remaining");
+            } else {
+                centerText(to_string(recipeList.size()) + " other recipe remaining");
+            }
+            uiBox("");
+            centerText("Would you like another recipe?");
+            centerText("(y) Yes    (n) No");
             cin >> input;
             while (input != "y" && input != "n") {
                 cout << "Invalid input. Please input y for another recipe or n to exit." << endl;
@@ -278,6 +303,60 @@ void recipeGraph::printLoading(int percent) {
         cout << "=";
     } else if (percent == 99) {
         cout << "100%] |" << endl;
+    }
+}
+
+void recipeGraph::uiBox(const string &text) {
+    int width = 64;
+    string line = "|  " + text;
+    int pad = width - line.length() - 1;
+    if (pad < 0) {
+        pad = 0;
+    }
+    line += string(pad, ' ') + "|";
+    cout << line <<  endl;
+}
+
+void recipeGraph::centerText(const string &text) {
+    int width = 64;
+    int spaces = width - text.length() - 2;
+    cout << "|" << string(spaces / 2, ' ') << text << string(spaces - (spaces / 2), ' ') << "|" << endl;
+}
+
+void recipeGraph::wrapText(const string &text, const string &prefix, int width) {
+    string remaining = text;
+    string currentPrefix = prefix;
+
+    while (!remaining.empty()) {
+        string line = currentPrefix + remaining;
+
+        if (line.length() <= width) {
+            uiBox(line);
+            break;
+        } else {
+            int maxLength = width - currentPrefix.length();
+            int lineBreak = maxLength;
+
+            if (lineBreak > 0 && lineBreak < remaining.length()) {
+                size_t space = remaining.rfind(' ', lineBreak);
+                if (space != string::npos && space > 0) {
+                    lineBreak = space;
+                }
+            }
+
+            string substring = remaining.substr(0, lineBreak);
+            uiBox(currentPrefix + substring);
+
+            remaining = remaining.substr(lineBreak);
+            if (!remaining.empty() && remaining[0] == ' ') {
+                remaining = remaining.substr(1);
+            }
+
+            if (currentPrefix == "  - ") {
+                currentPrefix = "    ";
+            }
+
+        }
     }
 }
 

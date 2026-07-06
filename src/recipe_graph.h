@@ -79,13 +79,16 @@ class recipeGraph {
     bool loadCSV(const string& filename);
 
     void printLoading(int percent);
+    void uiBox(const string& text);
+    void centerText(const string& text);
+    void wrapText(const string& text, const string& prefix, int width);
 
 public:
     //  Constructor, automatically loads the recipes_data.csv file and populates the graph
     recipeGraph();
 
     //  A helper function for printing individual recipes (Could be moved to private)
-    void printRecipe(const Recipe& recipe) const;
+    void printRecipe(const Recipe& recipe);
 
     /*  The main printing function for printing search benchmark and for printing matching recipes out to main
      *  Contains an interactive loop to continue printing recipes one-by-one so long as
