@@ -86,6 +86,23 @@ int main() {
                     cout << endl;
                     graph.searchDfs(ingredient);
                     graph.printResults();
+                    cout << "+==============================================================+" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                     What's For Dinner                        |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "+==============================================================+" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|  (1) Search by Single Ingredient                             |" << endl;
+                    cout << "|  (2) Search by Multiple Ingredients                          |" << endl;
+                    cout << "|  (3) Exit                                                    |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "+==============================================================+" << endl;
+                    cout << endl;
+                    input = 0;
+                    cout << "Select an option: >";
+                    break;
 
                 } else if (searchInput == 1 && input == 2) {
                     vector<string> ingredients;
@@ -100,6 +117,23 @@ int main() {
                     }
                     graph.searchDfs(ingredients);
                     graph.printResults();
+                    cout << "+==============================================================+" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                     What's For Dinner                        |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "+==============================================================+" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|  (1) Search by Single Ingredient                             |" << endl;
+                    cout << "|  (2) Search by Multiple Ingredients                          |" << endl;
+                    cout << "|  (3) Exit                                                    |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "+==============================================================+" << endl;
+                    cout << endl;
+                    input = 0;
+                    cout << "Select an option: >";
+                    break;
 
                 } else if (searchInput == 2 && input == 1) {
                     string ingredient;
@@ -109,6 +143,23 @@ int main() {
                     cout << endl;
                     graph.searchBfs(ingredient);
                     graph.printResults();
+                    cout << "+==============================================================+" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                     What's For Dinner                        |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "+==============================================================+" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|  (1) Search by Single Ingredient                             |" << endl;
+                    cout << "|  (2) Search by Multiple Ingredients                          |" << endl;
+                    cout << "|  (3) Exit                                                    |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "+==============================================================+" << endl;
+                    cout << endl;
+                    input = 0;
+                    cout << "Select an option: >";
+                    break;
 
                 } else if (searchInput == 2 && input == 2) {
                     vector<string> ingredients;
@@ -123,6 +174,23 @@ int main() {
                     }
                     graph.searchBfs(ingredients);
                     graph.printResults();
+                    cout << "+==============================================================+" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                     What's For Dinner                        |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "+==============================================================+" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "|  (1) Search by Single Ingredient                             |" << endl;
+                    cout << "|  (2) Search by Multiple Ingredients                          |" << endl;
+                    cout << "|  (3) Exit                                                    |" << endl;
+                    cout << "|                                                              |" << endl;
+                    cout << "+==============================================================+" << endl;
+                    cout << endl;
+                    input = 0;
+                    cout << "Select an option: >";
+                    break;
 
                 } else if (searchInput == 3) {
                     cout << "+==============================================================+" << endl;

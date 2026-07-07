@@ -49,6 +49,7 @@ vector<string> recipeGraph::parseCSV(const string &line) {
     for (char c : line) {
         if (c == '"') {
             quotes = !quotes;
+            attr += c;
         } else if (c == ',' && !quotes) {
             attributes.push_back(filterAttribute(attr));
             attr.clear();
@@ -68,20 +69,53 @@ vector<string> recipeGraph::parseList(const string &list) {
         return result;
     }
 
-    string items = list.substr(1, list.length() - 2);
+    string items = list;
+
+    if (!items.empty() && items.front() == '"') {
+        items = items.substr(1);
+    }
+    if (!items.empty() && items.back() == '"') {
+        items = items.substr(0, items.length() - 1);
+    }
+
+    if (items.length() >= 2 && items.front() == '[' && items.back() == ']') {
+        items = items.substr(1, items.length() - 2);
+    }
 
     if (items.empty()) {
         return result;
     }
 
-    size_t start = 0;
-    for (size_t i = 0; i <= items.length(); i++) {
-        if (i == items.length() || items[i] == ',') {
-            string item = items.substr(start, i - start);
-            result.push_back(filterAttribute(item));
-            start = i + 1;
+    size_t pos = items.find("\", \"");
+    while (pos != string::npos) {
+        string item = items.substr(0, pos);
+
+        while (!item.empty() && item.front() == '"') {
+            item = item.substr(1);
         }
+
+        while (!item.empty() && item.back() == '"') {
+            item = item.substr(0, item.length() - 1);
+        }
+
+        result.push_back(filterAttribute(item));
+        items.erase(0, pos + 4);
+        pos = items.find("\", \"");
     }
+
+    if (!items.empty()) {
+        string item = items;
+
+        while (!item.empty() && item.front() == '"') {
+            item = item.substr(1);
+        }
+        while (!item.empty() && item.back() == '"') {
+            item = item.substr(0, item.length() - 1);
+        }
+
+        result.push_back(filterAttribute(item));
+    }
+
     return result;
 }
 
@@ -182,7 +216,8 @@ void recipeGraph::printRecipe(const Recipe& recipe) {
         wrapText(d, "  - ", textSpace);
     }
     uiBox("");
-    uiBox("Link:" + recipe.link);
+    uiBox("Link:");
+    cout << "|  " << recipe.link << endl;
     uiBox("");
     cout << "+==============================================================+" << endl;
 }
@@ -283,6 +318,10 @@ void recipeGraph::printResults() {
             uiBox("");
             centerText("Would you like another recipe?");
             centerText("(y) Yes    (n) No");
+            uiBox("");
+            cout << "+==============================================================+" << endl;
+            cout << endl;
+            cout << "Select an option: >";
             cin >> input;
             while (input != "y" && input != "n") {
                 cout << "Invalid input. Please input y for another recipe or n to exit." << endl;
