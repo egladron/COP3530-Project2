@@ -360,20 +360,44 @@ void recipeGraph::wrapText(const string &text, const string &prefix, int width) 
     }
 }
 
-recipeGraph::searchResult recipeGraph::bfs(const string &ingredient) const {
-    searchResult result{};
-    return result;
+recipeGraph::searchResult recipeGraph::bfs(const string& ingredient) const {
+    searchResult results;
+    recipeBFS bfsSearch(*this);
+
+    vector<size_t> recipeIndices = bfsSearch.search(ingredient);
+
+    for (size_t index : recipeIndices) {
+        results.recipes.push_back(recipes[index]);
+    }
+
+    results.nodesVisited = bfsSearch.getNodesVisited();
+    results.timeElapsed = bfsSearch.getTimeElapsed();
+    results.algorithmUsed = "BFS";
+
+    return results;
 }
 
-recipeGraph::searchResult recipeGraph::bfs(const vector<string> &ingredients) const {
-    searchResult result{};
-    return result;
+recipeGraph::searchResult recipeGraph::bfs(const vector<string>& ingredients) const {
+    searchResult results;
+    recipeBFS bfsSearch(*this);
+
+    vector<size_t> recipeIndices = bfsSearch.searchMultiple(ingredients);
+
+    for (size_t index : recipeIndices) {
+        results.recipes.push_back(recipes[index]);
+    }
+
+    results.nodesVisited = bfsSearch.getNodesVisited();
+    results.timeElapsed = bfsSearch.getTimeElapsed();
+    results.algorithmUsed = "BFS";
+
+    return results;
 }
 
-void recipeGraph::searchBfs(const string &ingredient) {
-    return;
+void recipeGraph::searchBfs(const string& ingredient) {
+    result = bfs(ingredient);
 }
 
-void recipeGraph::searchBfs(const vector<string> &ingredients) {
-    return;
+void recipeGraph::searchBfs(const vector<string>& ingredients) {
+    result = bfs(ingredients);
 }
