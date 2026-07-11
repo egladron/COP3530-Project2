@@ -16,11 +16,11 @@
 string recipeGraph::filterQuotes(const string &str) {
     string result = str;
 
-    if (result.front() == '"') {
+    if (result.length() >= 2 && result.front() == '"') {
         result.erase(0,1);
     }
 
-    if (result.back() == '"') {
+    if (result.length() >= 2 && result.back() == '"') {
         result.erase(result.length() - 1, 1);
     }
 
@@ -104,7 +104,11 @@ vector<string> recipeGraph::parseList(const string &list) {
         }
 
         result.push_back(filterAttribute(item));
-        items.erase(0, pos + 4);
+        if (pos + 4 <= items.length()) {
+            items.erase(0, pos + 4);
+        } else {
+            items.clear();
+        }
         pos = items.find("\", \"");
     }
 
@@ -135,7 +139,16 @@ bool recipeGraph::loadCSV(const string& filename) {
     getline(file, line);
     unordered_map<string, size_t> ingredientLookup;
     unordered_map<string, size_t> recipeLookup;
+    const int uniqueRecipes = 1312871;
+    const int uniqueIngredients = 2004769;
     const int totalLines = 2231150;
+
+    recipes.reserve(uniqueRecipes);
+    recipeNodes.reserve(uniqueRecipes);
+    ingredientNodes.reserve(uniqueIngredients);
+    recipeLookup.reserve(uniqueRecipes);
+    ingredientLookup.reserve(uniqueIngredients);
+
     int linesRead = 0;
     int lastPercent = -1;
 
@@ -317,7 +330,7 @@ void recipeGraph::printResults() {
     string input = "";
     random_device rd;
     mt19937 gen(rd());
-    vector<Recipe> recipeList = result.recipes;
+    vector<Recipe>& recipeList = result.recipes;
     while (!recipeList.empty() && input != "n") {
         uniform_int_distribution<int> dist(0, recipeList.size() - 1);
         int randnum = dist(gen);
@@ -351,6 +364,10 @@ void recipeGraph::printResults() {
 }
 
 void recipeGraph::printLoading(int percent) {
+    if (percent < 0 || percent > 100) {
+        return;
+    }
+
     if (percent == 0) {
         cout << "| Loading 2 million recipes... [";
     } else if (percent != 0 && percent != 100 && percent % 25 == 0) {
@@ -376,7 +393,12 @@ void recipeGraph::uiBox(const string &text) {
 void recipeGraph::centerText(const string &text) {
     int width = 64;
     int spaces = width - text.length() - 2;
-    cout << "|" << string(spaces / 2, ' ') << text << string(spaces - (spaces / 2), ' ') << "|" << endl;
+
+    if (spaces > 0) {
+        cout << "|" << string(spaces / 2, ' ') << text << string(spaces - (spaces / 2), ' ') << "|" << endl;
+    } else {
+        cout << "| " << text << " |" << endl;
+    }
 }
 
 void recipeGraph::wrapText(const string &text, const string &prefix, int width) {
@@ -384,19 +406,22 @@ void recipeGraph::wrapText(const string &text, const string &prefix, int width) 
     string currentPrefix = prefix;
 
     while (!remaining.empty()) {
-        string line = currentPrefix + remaining;
-
-        if (line.length() <= width) {
-            uiBox(line);
+        if (currentPrefix.length() + remaining.length() <= width) {
+            uiBox(currentPrefix + remaining);
             break;
         } else {
             int maxLength = width - currentPrefix.length();
             int lineBreak = maxLength;
 
+            if (lineBreak <= 0) {
+                uiBox(currentPrefix + remaining);
+                break;
+            }
+
             if (lineBreak > 0 && lineBreak < remaining.length()) {
                 size_t space = remaining.rfind(' ', lineBreak);
                 if (space != string::npos && space > 0) {
-                    lineBreak = space;
+                    lineBreak = (int)space;
                 }
             }
 

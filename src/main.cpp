@@ -70,16 +70,24 @@ int main() {
                     cout << endl;
                     stringstream ss(line);
                     string ingredient;
-                    while (getline(ss, ingredient, ',')) {
-                        size_t start = ingredient.find_first_not_of(" \t\n\r");
-                        size_t end = ingredient.find_last_not_of(" \t\n\r");
+                    while (ingredients.size() < 2) {
+                        while (getline(ss, ingredient, ',')) {
+                            size_t start = ingredient.find_first_not_of(" \t\n\r");
+                            size_t end = ingredient.find_last_not_of(" \t\n\r");
 
-                        if (start != string::npos && end != string::npos) {
-                            ingredient = ingredient.substr(start, end - start + 1);
+                            if (start != string::npos && end != string::npos) {
+                                ingredient = ingredient.substr(start, end - start + 1);
+                            }
+
+                            if (!ingredient.empty()) {
+                                ingredients.push_back(uiObj.toLower(ingredient));
+                            }
                         }
-
-                        if (!ingredient.empty()) {
-                            ingredients.push_back(uiObj.toLower(ingredient));
+                        if (ingredients.size() < 2) {
+                            cout << "Error, please enter more than one ingredient: >" << endl;
+                            getline(cin, line);
+                            ss = stringstream(line);
+                            ingredients.clear();
                         }
                     }
                     graph.searchDfs(ingredients);
@@ -111,16 +119,24 @@ int main() {
                     cout << endl;
                     stringstream ss(line);
                     string ingredient;
-                    while (getline(ss, ingredient, ',')) {
-                        size_t start = ingredient.find_first_not_of(" \t\n\r");
-                        size_t end = ingredient.find_last_not_of(" \t\n\r");
+                    while (ingredients.size() < 2) {
+                        while (getline(ss, ingredient, ',')) {
+                            size_t start = ingredient.find_first_not_of(" \t\n\r");
+                            size_t end = ingredient.find_last_not_of(" \t\n\r");
 
-                        if (start != string::npos && end != string::npos) {
-                            ingredient = ingredient.substr(start, end - start + 1);
+                            if (start != string::npos && end != string::npos) {
+                                ingredient = ingredient.substr(start, end - start + 1);
+                            }
+
+                            if (!ingredient.empty()) {
+                                ingredients.push_back(uiObj.toLower(ingredient));
+                            }
                         }
-
-                        if (!ingredient.empty()) {
-                            ingredients.push_back(uiObj.toLower(ingredient));
+                        if (ingredients.size() < 2) {
+                            cout << "Error, please enter more than one ingredient: >" << endl;
+                            getline(cin, line);
+                            ss = stringstream(line);
+                            ingredients.clear();
                         }
                     }
                     graph.searchBfs(ingredients);
