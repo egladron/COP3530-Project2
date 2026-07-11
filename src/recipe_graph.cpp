@@ -294,11 +294,19 @@ void recipeGraph::printResults() {
     uiBox("Time elapsed: " + ss.str());
     uiBox("Algorithm used: " + result.algorithmUsed);
     uiBox("");
-    cout << "+==============================================================+" << endl;
-    uiBox("");
-    centerText("Try this recipe:");
-    uiBox("");
-    cout << "+==============================================================+" << endl;
+    if (result.recipes.size()) {
+        cout << "+==============================================================+" << endl;
+        uiBox("");
+        centerText("Try this recipe:");
+        uiBox("");
+        cout << "+==============================================================+" << endl;
+    } else {
+        cout << "+==============================================================+" << endl;
+        uiBox("");
+        centerText("No recipes found");
+        uiBox("");
+        cout << "+==============================================================+" << endl;
+    }
     uiBox("");
 
     string input = "";
@@ -331,7 +339,8 @@ void recipeGraph::printResults() {
                 cin >> input;
             }
         } else {
-            cout << "No more recipes match" << endl;
+            uiBox("No more recipes match");
+            uiBox("");
         }
     }
 }
