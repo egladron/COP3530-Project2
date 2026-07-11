@@ -25,11 +25,13 @@ bool datasetDownloader::downloadFile() {
 bool datasetDownloader::extractFile() {
     cout << "Extracting..." << endl;
 
+    //  Windows Branch
     #ifdef _WIN32
         string winExtract = "powershell -Command \"Expand-Archive -Path " + fileZip + " -DestinationPath . -Force\"";
         if (system(winExtract.c_str()) == 0) {
             return true;
         }
+    //  Other Platforms Branch
     #else
         string extract = "unzip -q -o " + fileZip;
         int result = system(extract.c_str());
@@ -77,5 +79,6 @@ bool datasetDownloader::checkAvailability() {
 }
 
 string datasetDownloader::filePath() {
-    return filesystem::current_path().string();
+    fileDirectory = filesystem::current_path().string();
+    return fileDirectory;
 }

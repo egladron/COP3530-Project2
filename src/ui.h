@@ -6,6 +6,7 @@
 
 using namespace std;
 
+//  This class handles large repeated sections of the menu ui to reduce clutter in main()
 class ui {
 public:
     void downloading();
@@ -13,6 +14,8 @@ public:
     void mainMenu();
     void searchMenu();
     void exit();
+
+    //  A helper function to make inputs case-insensitive
     string toLower(const string& str);
 };
 

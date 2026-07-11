@@ -63,6 +63,9 @@ vector<string> recipeGraph::parseCSV(const string &line) {
     return attributes;
 }
 
+/* Parses through a string containing a list of elements. Removes outer quotes and brackets and splits the list into
+ * elements based on outer commas while keeping inner commas
+ */
 vector<string> recipeGraph::parseList(const string &list) {
     vector<string> result;
 
@@ -75,6 +78,7 @@ vector<string> recipeGraph::parseList(const string &list) {
     if (!items.empty() && items.front() == '"') {
         items = items.substr(1);
     }
+
     if (!items.empty() && items.back() == '"') {
         items = items.substr(0, items.length() - 1);
     }
@@ -110,6 +114,7 @@ vector<string> recipeGraph::parseList(const string &list) {
         while (!item.empty() && item.front() == '"') {
             item = item.substr(1);
         }
+
         while (!item.empty() && item.back() == '"') {
             item = item.substr(0, item.length() - 1);
         }

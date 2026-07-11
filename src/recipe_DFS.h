@@ -10,6 +10,11 @@ using namespace std;
 
 class recipeGraph;
 
+/* This Depth-First Search function works by first finding the ingredient node in the graph. It then finds all the recipe
+ * nodes connected to it that are direct matches. It then explores the adjacent nodes of recipes, which would be other
+ * ingredients used by those recipes. It then explores the recipes that those adjacent ingredients are a part of in
+ * order to find new matching recipes
+ */
 class recipeDFS {
     //  Houses the graph
     const recipeGraph& graph;
@@ -32,7 +37,7 @@ public:
     //  A constructor that loads the graph and sets vectors empty at initialization
     recipeDFS(const recipeGraph& graph);
 
-    //  A search function for a single ingredient and outputs recipe indicies
+    //  A search function for a single ingredient and outputs recipe indices
     vector<size_t> search(const string& ingredient);
 
     /* A search function for multiple ingredients, requires a vector of
