@@ -6,6 +6,9 @@ search used.
 
 <h2> Table of Contents </h2>
 
+- [Downloading](#downloading)
+  - [cURL](#curl)
+  - [Direct Download](#downloading-the-dataset-directly)
 - [Instructions](#instructions)
   - [Main Menu](#main-menu)
   - [Search Menu](#search-menu)
@@ -13,12 +16,24 @@ search used.
   - [Search Result](#search-result)
 - [Dataset](#dataset)
 
-# Instructions
-
+# Downloading
 The first time the program is run, it will download and extract the dataset into the same folder the program is run from.
+
+If cURL is not installed on your computer, this program cannot download the dataset.
+
+### cURL
+This is a link from cURL documentation showing how to install cURL
+https://curl.se/docs/install.html
+
+### Downloading the Dataset Directly
+
+Alternatively, you can download the dataset from its website and extract its contents to the directory the
+executable is run from. [The link to the dataset is at the bottom of the readme.](#dataset)
+
+
+# Instructions
 Each time the program is run, it will first have to construct and populate the bipartite graph from the dataset. The
 load bar at the start shows the progress of the graph being built and populated.
-
 ## Main Menu:
 
 The main menu will appear showing three options:
