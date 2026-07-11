@@ -44,8 +44,8 @@ and 2 both continue to the search prompt.
 ## Search Prompt:
 
 Based on the user's choice in the first menu, they must either enter one ingredient or multiple ingredients separated by
-a space. The program will search the graph for any recipes that contain the ingredient(s) entered. It will then display
-these benchmarks for the search:
+a comma. The input is case-insensitive and will prune whitespace. The program will search the graph for any recipes that
+contain the ingredient(s) entered. It will then display these benchmarks for the search:
 
 - The number of recipes found
 - The number of nodes traversed while searching
@@ -60,7 +60,7 @@ With a successful search the program will output:
 - A URL link to the recipe from the website it was taken from
 
 Each search only outputs one recipe. If the search resulted in more than one recipe, it will prompt the user if they
-would like to view another recipe. The user can select **y** for yes and **n** for no. The user can continue to select
+would like to view another recipe. The user can select **<big>y</big>** for yes and **<big>n</big>** for no. The user can continue to select
 to view another recipe match as long as there are still matches available. If the user selects no or there are no more 
 recipe matches, it will return to the main menu.
 

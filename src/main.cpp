@@ -52,8 +52,7 @@ int main() {
                 if (searchInput == 1 && input == 1) {
                     string ingredient;
                     cout << "Please enter an ingredient to search for a recipe: >";
-                    cin >> ingredient;
-                    cin.ignore();
+                    getline(cin, ingredient);
                     cout << endl;
                     graph.searchDfs(uiObj.toLower(ingredient));
                     graph.printResults();
@@ -66,13 +65,22 @@ int main() {
                 } else if (searchInput == 1 && input == 2) {
                     vector<string> ingredients;
                     string line;
-                    cout << "Please enter ingredients separated by a space: >";
+                    cout << "Please enter ingredients separated by a comma: >";
                     getline(cin, line);
                     cout << endl;
                     stringstream ss(line);
                     string ingredient;
-                    while (ss >> ingredient) {
-                        ingredients.push_back(uiObj.toLower(ingredient));
+                    while (getline(ss, ingredient, ',')) {
+                        size_t start = ingredient.find_first_not_of(" \t\n\r");
+                        size_t end = ingredient.find_last_not_of(" \t\n\r");
+
+                        if (start != string::npos && end != string::npos) {
+                            ingredient = ingredient.substr(start, end - start + 1);
+                        }
+
+                        if (!ingredient.empty()) {
+                            ingredients.push_back(uiObj.toLower(ingredient));
+                        }
                     }
                     graph.searchDfs(ingredients);
                     graph.printResults();
@@ -85,8 +93,7 @@ int main() {
                 } else if (searchInput == 2 && input == 1) {
                     string ingredient;
                     cout << "Please enter an ingredient to search for a recipe: >";
-                    cin >> ingredient;
-                    cin.ignore();
+                    getline(cin, ingredient);
                     cout << endl;
                     graph.searchBfs(uiObj.toLower(ingredient));
                     graph.printResults();
@@ -99,13 +106,22 @@ int main() {
                 } else if (searchInput == 2 && input == 2) {
                     vector<string> ingredients;
                     string line;
-                    cout << "Please enter ingredients separated by a space: >";
+                    cout << "Please enter ingredients separated by a comma: >";
                     getline(cin, line);
                     cout << endl;
                     stringstream ss(line);
                     string ingredient;
-                    while (ss >> ingredient) {
-                        ingredients.push_back(uiObj.toLower(ingredient));
+                    while (getline(ss, ingredient, ',')) {
+                        size_t start = ingredient.find_first_not_of(" \t\n\r");
+                        size_t end = ingredient.find_last_not_of(" \t\n\r");
+
+                        if (start != string::npos && end != string::npos) {
+                            ingredient = ingredient.substr(start, end - start + 1);
+                        }
+
+                        if (!ingredient.empty()) {
+                            ingredients.push_back(uiObj.toLower(ingredient));
+                        }
                     }
                     graph.searchBfs(ingredients);
                     graph.printResults();
