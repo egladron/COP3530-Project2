@@ -3,6 +3,7 @@
 #include "recipe_graph.h"
 #include "recipe_DFS.h"
 #include "recipe_BFS.h"
+#include "ui.h"
 
 #include <algorithm>
 #include <fstream>
@@ -282,6 +283,7 @@ void recipeGraph::searchDfs(const vector<string> &ingredients) {
 }
 
 void recipeGraph::printResults() {
+    ui uiObj;
     cout << "+==============================================================+" << endl;
     uiBox("");
 
@@ -323,6 +325,7 @@ void recipeGraph::printResults() {
             cout << endl;
             cout << "Select an option: >";
             cin >> input;
+            input = uiObj.toLower(input);
             while (input != "y" && input != "n") {
                 cout << "Invalid input. Please input y for another recipe or n to exit." << endl;
                 cin >> input;

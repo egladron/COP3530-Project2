@@ -14,4 +14,6 @@ add_executable(COP3530_Project2
         src/recipe_BFS.cpp
         src/recipe_BFS.h
         src/recipe_DFS.cpp
-        src/recipe_DFS.h)
+        src/recipe_DFS.h
+        src/ui.cpp
+        src/ui.h)

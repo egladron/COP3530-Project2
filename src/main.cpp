@@ -1,22 +1,17 @@
 #include "dataset.h"
 #include "recipe_graph.h"
+#include "ui.h"
 #include <iostream>
 #include <sstream>
 
 int main() {
-    cout << "+==============================================================+" << endl;
-    cout << "|                                                              |" << endl;
-    cout << "|                    Downloading dataset...                    |" << endl;
-    cout << "|                                                              |" << endl;
-    cout << "+==============================================================+" << endl;
+    ui uiObj;
+    uiObj.downloading();
 
     datasetDownloader dataset;
+
     if (dataset.checkAvailability()) {
-        cout << "+==============================================================+" << endl;
-        cout << "|                                                              |" << endl;
-        cout << "|                    Download successful!                      |" << endl;
-        cout << "|                                                              |" << endl;
-        cout << "+==============================================================+" << endl;
+        uiObj.downloadSuccessful();
     } else {
         cout << "Error: Cannot download dataset" << endl;
         return 0;
@@ -25,20 +20,7 @@ int main() {
     cout << "|                                                              |" << endl;
     recipeGraph graph;
     cout << "|                                                              |" << endl;
-
-    cout << "+==============================================================+" << endl;
-    cout << "|                                                              |" << endl;
-    cout << "|                     What's For Dinner                        |" << endl;
-    cout << "|                                                              |" << endl;
-    cout << "|                                                              |" << endl;
-    cout << "+==============================================================+" << endl;
-    cout << "|                                                              |" << endl;
-    cout << "|                                                              |" << endl;
-    cout << "|  (1) Search by Single Ingredient                             |" << endl;
-    cout << "|  (2) Search by Multiple Ingredients                          |" << endl;
-    cout << "|  (3) Exit                                                    |" << endl;
-    cout << "|                                                              |" << endl;
-    cout << "+==============================================================+" << endl;
+    uiObj.mainMenu();
     cout << endl;
     int input = 0;
     cout << "Select an option: >";
@@ -54,18 +36,7 @@ int main() {
 
         if (input == 1 || input == 2) {
             cout << endl;
-            cout << "+==============================================================+" << endl;
-            cout << "|                                                              |" << endl;
-            cout << "|                    Choose an algorithm:                      |" << endl;
-            cout << "|                                                              |" << endl;
-            cout << "+==============================================================+" << endl;
-            cout << "|                                                              |" << endl;
-            cout << "|                                                              |" << endl;
-            cout << "|  (1) Depth-First Search                                      |" << endl;
-            cout << "|  (2) Breadth-First Search                                    |" << endl;
-            cout << "|  (3) Return to Main Menu                                     |" << endl;
-            cout << "|                                                              |" << endl;
-            cout << "+==============================================================+" << endl;
+            uiObj.searchMenu();
             cout << endl;
             cout << "Select an option: >";
             int searchInput = 0;
@@ -84,21 +55,9 @@ int main() {
                     cin >> ingredient;
                     cin.ignore();
                     cout << endl;
-                    graph.searchDfs(ingredient);
+                    graph.searchDfs(uiObj.toLower(ingredient));
                     graph.printResults();
-                    cout << "+==============================================================+" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                     What's For Dinner                        |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "+==============================================================+" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|  (1) Search by Single Ingredient                             |" << endl;
-                    cout << "|  (2) Search by Multiple Ingredients                          |" << endl;
-                    cout << "|  (3) Exit                                                    |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "+==============================================================+" << endl;
+                    uiObj.mainMenu();
                     cout << endl;
                     input = 0;
                     cout << "Select an option: >";
@@ -113,23 +72,11 @@ int main() {
                     stringstream ss(line);
                     string ingredient;
                     while (ss >> ingredient) {
-                        ingredients.push_back(ingredient);
+                        ingredients.push_back(uiObj.toLower(ingredient));
                     }
                     graph.searchDfs(ingredients);
                     graph.printResults();
-                    cout << "+==============================================================+" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                     What's For Dinner                        |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "+==============================================================+" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|  (1) Search by Single Ingredient                             |" << endl;
-                    cout << "|  (2) Search by Multiple Ingredients                          |" << endl;
-                    cout << "|  (3) Exit                                                    |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "+==============================================================+" << endl;
+                    uiObj.mainMenu();
                     cout << endl;
                     input = 0;
                     cout << "Select an option: >";
@@ -141,21 +88,9 @@ int main() {
                     cin >> ingredient;
                     cin.ignore();
                     cout << endl;
-                    graph.searchBfs(ingredient);
+                    graph.searchBfs(uiObj.toLower(ingredient));
                     graph.printResults();
-                    cout << "+==============================================================+" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                     What's For Dinner                        |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "+==============================================================+" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|  (1) Search by Single Ingredient                             |" << endl;
-                    cout << "|  (2) Search by Multiple Ingredients                          |" << endl;
-                    cout << "|  (3) Exit                                                    |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "+==============================================================+" << endl;
+                    uiObj.mainMenu();
                     cout << endl;
                     input = 0;
                     cout << "Select an option: >";
@@ -170,42 +105,18 @@ int main() {
                     stringstream ss(line);
                     string ingredient;
                     while (ss >> ingredient) {
-                        ingredients.push_back(ingredient);
+                        ingredients.push_back(uiObj.toLower(ingredient));
                     }
                     graph.searchBfs(ingredients);
                     graph.printResults();
-                    cout << "+==============================================================+" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                     What's For Dinner                        |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "+==============================================================+" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|  (1) Search by Single Ingredient                             |" << endl;
-                    cout << "|  (2) Search by Multiple Ingredients                          |" << endl;
-                    cout << "|  (3) Exit                                                    |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "+==============================================================+" << endl;
+                    uiObj.mainMenu();
                     cout << endl;
                     input = 0;
                     cout << "Select an option: >";
                     break;
 
                 } else if (searchInput == 3) {
-                    cout << "+==============================================================+" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                     What's For Dinner                        |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "+==============================================================+" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "|  (1) Search by Single Ingredient                             |" << endl;
-                    cout << "|  (2) Search by Multiple Ingredients                          |" << endl;
-                    cout << "|  (3) Exit                                                    |" << endl;
-                    cout << "|                                                              |" << endl;
-                    cout << "+==============================================================+" << endl;
+                    uiObj.mainMenu();
                     cout << endl;
                     input = 0;
                     cout << "Select an option: >";
@@ -217,11 +128,7 @@ int main() {
             }
         } else if (input == 3) {
             cout << endl;
-            cout << "+==============================================================+" << endl;
-            cout << "|                                                              |" << endl;
-            cout << "|                     Exiting Program...                       |" << endl;
-            cout << "|                                                              |" << endl;
-            cout << "+==============================================================+" << endl;
+            uiObj.exit();
         } else {
             cout << endl;
             cout << "Error, invalid option selected, please choose a valid option from the menu" << endl;
